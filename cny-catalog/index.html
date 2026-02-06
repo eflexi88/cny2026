@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 丙午马年 - 烟花全系列目录</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #b91c1c; 
+            background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .animate-slide-up { animation: slideUp 0.3s ease-out; }
+        
+        .product-card:active { transform: scale(0.98); }
+        .category-btn.active { 
+            background-color: #facc15; 
+            color: #b91c1c;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="text-white pb-24">
+
+    <!-- 顶部代理信息栏 -->
+    <div id="agent-banner" class="bg-yellow-500 text-red-900 text-center py-1 text-[10px] font-black uppercase tracking-widest">
+        正在为您连接专属顾问: <span id="display-agent-name">官方客服</span>
+    </div>
+
+    <!-- 导航栏 -->
+    <nav class="sticky top-0 z-50 bg-red-800/95 backdrop-blur-md border-b border-yellow-500/30 px-4 py-3 flex justify-between items-center shadow-xl">
+        <div class="flex flex-col">
+            <span class="font-black text-lg text-yellow-400 leading-none">2026 丙午马年</span>
+            <span class="text-[9px] text-yellow-200/70 mt-1 uppercase tracking-tighter">Fireworks Catalogue</span>
+        </div>
+        <button onclick="toggleCart()" class="relative p-2 bg-yellow-500 text-red-900 rounded-full shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            <span id="cart-count" class="absolute -top-1 -right-1 bg-white text-red-600 text-[10px] font-black px-1.5 py-0.5 rounded-full border border-red-600">0</span>
+        </button>
+    </nav>
+
+    <!-- 头部公告 -->
+    <header class="py-8 px-4 text-center">
+        <h1 class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-b from-yellow-100 to-yellow-500 mb-1">
+            新春烟火大全
+        </h1>
+        <p class="text-yellow-100/60 text-xs italic">全系列爆款 · 现货供应 · 严选品质</p>
+    </header>
+
+    <!-- 分类筛选器 -->
+    <div class="sticky top-[60px] z-40 bg-red-900/80 backdrop-blur-sm py-3 mb-4">
+        <div class="flex gap-2 overflow-x-auto px-4 hide-scrollbar" id="category-list">
+            <button onclick="filterProducts('all')" class="category-btn active whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-black border border-yellow-500/30 transition-all">全部</button>
+            <button onclick="filterProducts('手持系列')" class="category-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-black border border-yellow-500/30 transition-all">🪄 手持系列</button>
+            <button onclick="filterProducts('花筒/玩具')" class="category-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-black border border-yellow-500/30 transition-all">🤡 趣味玩具</button>
+            <button onclick="filterProducts('鞭炮系列')" class="category-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-black border border-yellow-500/30 transition-all">🧨 传统鞭炮</button>
+            <button onclick="filterProducts('发单系列')" class="category-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-black border border-yellow-500/30 transition-all">✨ 发单系列</button>
+            <button onclick="filterProducts('吐珠/火箭')" class="category-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-black border border-yellow-500/30 transition-all">🚀 吐珠火箭</button>
+            <button onclick="filterProducts('盆花组合')" class="category-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-black border border-yellow-500/30 transition-all">🎆 盆花/大组合</button>
+        </div>
+    </div>
+
+    <!-- 产品网格 -->
+    <main class="container mx-auto px-3 pb-12">
+        <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-6">
+            <!-- 渲染内容 -->
+        </div>
+    </main>
+
+    <!-- 图片/视频弹窗 -->
+    <div id="image-lightbox" class="fixed inset-0 z-[100] bg-black/95 hidden items-center justify-center p-4" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" class="max-w-full max-h-[85vh] rounded-lg shadow-2xl">
+    </div>
+
+    <div id="video-lightbox" class="fixed inset-0 z-[100] bg-black/95 hidden items-center justify-center p-4" onclick="closeVideo()">
+        <div class="relative w-full max-w-2xl aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl" onclick="event.stopPropagation()">
+            <video id="product-video" controls playsinline class="w-full h-full"></video>
+            <button class="absolute top-3 right-3 bg-black/50 text-white w-8 h-8 rounded-full text-xl" onclick="closeVideo()">&times;</button>
+        </div>
+    </div>
+
+    <!-- 购物车抽屉 -->
+    <div id="cart-modal" class="fixed inset-0 z-[60] bg-black/80 hidden items-end justify-center">
+        <div class="bg-white text-gray-800 w-full max-w-lg rounded-t-3xl overflow-hidden shadow-2xl animate-slide-up">
+            <div class="bg-red-700 p-5 text-white flex justify-between items-center">
+                <div>
+                    <h2 class="text-lg font-black italic">我的下单清单</h2>
+                    <p class="text-[10px] text-yellow-300 italic">专属顾问: <span id="cart-agent-name">官方</span></p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button onclick="clearCart()" class="text-white/60 hover:text-white text-[10px] font-bold border border-white/20 px-2 py-1 rounded">清空清单</button>
+                    <button onclick="toggleCart()" class="text-white/60 hover:text-white text-3xl">&times;</button>
+                </div>
+            </div>
+            <div id="cart-items" class="max-h-[50vh] overflow-y-auto p-5 space-y-4"></div>
+            <div class="p-5 border-t border-gray-100 bg-gray-50">
+                <div class="flex justify-between items-center mb-5 px-1">
+                    <span class="text-gray-400 font-bold">预计总额:</span>
+                    <span id="cart-total-price" class="text-2xl font-black text-red-600 tracking-tighter">RM 0.00</span>
+                </div>
+                <button onclick="checkout()" class="w-full bg-[#25D366] text-white py-4 rounded-xl font-black text-lg shadow-lg flex items-center justify-center gap-2 active:scale-95 transition-transform">
+                    确认并发送 WhatsApp 订单
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const agents = {
+            'agent1': { name: '代理 A (雪隆)', phone: '60129540804' },
+            'agent2': { name: '代理 B (北马)', phone: '60199886565' },
+            'hq': { name: '官方客服', phone: '60105330000' }
+        };
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const agentId = urlParams.get('id') || 'hq';
+        const currentAgent = agents[agentId] || agents['hq'];
+        document.getElementById('display-agent-name').innerText = currentAgent.name;
+        document.getElementById('cart-agent-name').innerText = currentAgent.name;
+
+        // 产品数据库 (已修复名称引号导致的点击失效)
+        const products = [
+            // 手持系列
+            { id: 'PM11N', name: '小霞光', price: 10, category: '手持系列', isHot: true },
+            { id: '11', name: '四色花', price: 12, category: '手持系列', isHot: false },
+            { id: 'PM22N', name: '7" 电光花', price: 8, category: '手持系列', isHot: false },
+            { id: 'PM33N', name: '小安全', price: 15, category: '手持系列', isHot: false },
+            { id: '33', name: '夜空之星', price: 20, category: '手持系列', isHot: false },
+            { id: '33N', name: '彩色棒', price: 5, category: '手持系列', isHot: false },
+            { id: 'PM2525N', name: '18寸金色电光花', price: 15, category: '手持系列', isHot: false },
+            { id: '2525', name: '18寸快乐小神鞭', price: 15, category: '手持系列', isHot: false },
+            { id: 'PM3636N', name: '14寸电光花', price: 10, category: '手持系列', isHot: false },
+            { id: 'PM3939N', name: '大号霞光', price: 18, category: '手持系列', isHot: false },
+
+            // 花筒系列 / 烟花玩具系列
+            { id: 'PM44N', name: '7" 雪糕', price: 18, category: '花筒/玩具', isHot: false },
+            { id: 'PM4545N', name: '10寸雪糕', price: 22, category: '花筒/玩具', isHot: false },
+            { id: 'PM4848N', name: '15寸雪糕', price: 28, category: '花筒/玩具', isHot: false },
+            { id: 'PM66N', name: '春天芭蕾', price: 25, category: '花筒/玩具', isHot: false },
+            { id: 'PM77N', name: '炸珠大地开花', price: 30, category: '花筒/玩具', isHot: true },
+            { id: 'PM88N', name: '发财树', price: 35, category: '花筒/玩具', isHot: false },
+            { id: '88', name: '欢乐花仙', price: 22, category: '花筒/玩具', isHot: false },
+            { id: 'PM99N', name: '莲花开', price: 28, category: '花筒/玩具', isHot: false },
+            { id: 'PM1010N', name: '茶花香', price: 16, category: '花筒/玩具', isHot: false },
+            { id: 'PM1212N', name: '龙蛋', price: 12, category: '花筒/玩具', isHot: false },
+            { id: 'PM2727N', name: '50发飞天鼠', price: 35, category: '花筒/玩具', isHot: false },
+            { id: 'PM2828N', name: '小黄蜂', price: 10, category: '花筒/玩具', isHot: false },
+            { id: 'PM3030N', name: '太空飞碟', price: 20, category: '花筒/玩具', isHot: false },
+            { id: '3030N', name: '双彩连环蜂', price: 18, category: '花筒/玩具', isHot: false },
+            { id: '3030', name: '水母奇缘', price: 22, category: '花筒/玩具', isHot: false },
+            { id: 'PM3232N', name: '金玉满堂', price: 30, category: '花筒/玩具', isHot: false },
+            { id: 'PM5050N', name: '彩色小金鱼 (POP POP)', price: 5, category: '花筒/玩具', isHot: false },
+            { id: 'PM5050N_B', name: '彩色大鲨鱼 (POP POP B)', price: 8, category: '花筒/玩具', isHot: false },
+            { id: 'PM5656N', name: '欢乐派对', price: 12, category: '花筒/玩具', isHot: false },
+            { id: '5757', name: '银花报喜', price: 35, category: '花筒/玩具', isHot: false },
+
+            // 鞭炮系列
+            { id: 'PM1313N', name: '8尺红炮', price: 40, category: '鞭炮系列', isHot: false },
+            { id: '1313', name: '8尺玫瑰红炮', price: 45, category: '鞭炮系列', isHot: true },
+            { id: 'PM1414N', name: '舞色迎喜', price: 50, category: '鞭炮系列', isHot: false },
+            { id: '50K', name: '50000红炮', price: 150, category: '鞭炮系列', isHot: false },
+            { id: '1414', name: '88尺特红炮', price: 200, category: '鞭炮系列', isHot: false },
+            { id: '1414N', name: '88尺黄金满地', price: 220, category: '鞭炮系列', isHot: false },
+            { id: 'PM1515N', name: '38尺彩光特红', price: 130, category: '鞭炮系列', isHot: false },
+            { id: '1515N', name: '38尺黄金满地', price: 120, category: '鞭炮系列', isHot: false },
+            { id: '1515', name: '38尺龙凤双飞', price: 140, category: '鞭炮系列', isHot: false },
+            { id: '1515VIP', name: '108尺玫瑰红', price: 300, category: '鞭炮系列', isHot: true },
+            { id: 'PM3434N', name: '火柴炮', price: 5, category: '鞭炮系列', isHot: false },
+            { id: 'PM3838N', name: '顺利红', price: 15, category: '鞭炮系列', isHot: false },
+
+            // 发单系列
+            { id: 'PM4040N', name: '混合雨打芭蕉', price: 30, category: '发单系列', isHot: false },
+            { id: '4040', name: '3发雨打芭蕉', price: 15, category: '发单系列', isHot: false },
+            { id: 'PM4242N', name: '小雨打芭蕉', price: 10, category: '发单系列', isHot: false },
+
+            // 吐珠系列 / 火箭系列
+            { id: 'PM1111N', name: '20发魔术蛋', price: 45, category: '吐珠/火箭', isHot: false },
+            { id: 'PM2626N', name: '30发魔术蛋', price: 40, category: '吐珠/火箭', isHot: false },
+            { id: 'PM4444N', name: '10波霹雳雨', price: 28, category: '吐珠/火箭', isHot: false },
+            { id: 'PM4747N', name: '8波罗马烛光', price: 18, category: '吐珠/火箭', isHot: false },
+            { id: 'PM3737N', name: '炸珠响天雷', price: 20, category: '吐珠/火箭', isHot: false },
+            { id: '3737', name: '狼嚎火箭', price: 25, category: '吐珠/火箭', isHot: false },
+            { id: 'PM4141N', name: '啸声月旅行', price: 20, category: '吐珠/火箭', isHot: false },
+
+            // 盆花组合系列
+            { id: 'PM1616N', name: '9寸138发盆花', price: 450, category: '盆花组合', isHot: false },
+            { id: '1616', name: '亿万富翁组合', price: 480, category: '盆花组合', isHot: true },
+            { id: 'PM1717N', name: '4" 发盆花', price: 120, category: '盆花组合', isHot: false },
+            { id: 'PM2323N', name: '4寸16发盆花', price: 150, category: '盆花组合', isHot: false },
+            { id: 'PM2424N', name: '4" 36发盆花', price: 180, category: '盆花组合', isHot: false },
+            { id: '2424N', name: '闪亮美人100发', price: 380, category: '盆花组合', isHot: true },
+            { id: 'PM4646N', name: '4寸25发盆花', price: 160, category: '盆花组合', isHot: false },
+            { id: '4168*', name: '4寸168发组合烟花', price: 280, category: '盆花组合', isHot: false },
+            { id: 'V4168*', name: 'VIP 4寸168发组合烟花', price: 350, category: '盆花组合', isHot: true },
+            { id: 'JT0580', name: '9寸80发七彩祥云', price: 400, category: '盆花组合', isHot: false },
+            { id: 'JT1138', name: '12寸138发帕拉梅拉', price: 480, category: '盆花组合', isHot: false },
+            { id: 'JT5151', name: '8寸49发组合', price: 180, category: '盆花组合', isHot: false },
+            { id: 'JT7138', name: '7寸138发速度与激情', price: 320, category: '盆花组合', isHot: false },
+            { id: '7168', name: '7寸168发富贵满堂', price: 360, category: '盆花组合', isHot: false },
+            { id: '7333', name: '7寸333发星河传说', price: 500, category: '盆花组合', isHot: true },
+            { id: '8228', name: '8寸228发鲜衣策马', price: 420, category: '盆花组合', isHot: true },
+            { id: 'JT1919', name: '2寸88发巅峰', price: 300, category: '盆花组合', isHot: false },
+            { id: '4138', name: '4寸138发组合', price: 220, category: '盆花组合', isHot: false },
+            { id: '4228', name: '4寸228发组合', price: 350, category: '盆花组合', isHot: false }
+        ];
+
+        let cart = {};
+
+        function handleImageError(img, id) {
+            if (img.src.endsWith('.jpg')) {
+                img.src = `images/${id}.png`;
+            } else if (img.src.endsWith('.png')) {
+                img.onerror = null;
+                img.src = `https://placehold.co/400x400/800000/ffffff?text=${id}`;
+            }
+        }
+
+        function renderProducts(catFilter = 'all') {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+            const filtered = catFilter === 'all' ? products : products.filter(p => p.category === catFilter);
+
+            filtered.forEach(p => {
+                const pureId = p.id.replace('*', '');
+                const imgPath = `images/${pureId}.jpg`;
+                const videoPath = `videos/${pureId}.mp4`;
+                
+                const card = document.createElement('div');
+                card.className = 'product-card bg-white rounded-xl overflow-hidden shadow-lg flex flex-col transition-all';
+                card.innerHTML = `
+                    <div class="aspect-square bg-gray-100 flex items-center justify-center relative overflow-hidden">
+                        <img src="${imgPath}" 
+                             onclick="openLightbox(this.src)" 
+                             class="w-full h-full object-cover cursor-zoom-in" 
+                             onerror="handleImageError(this, '${pureId}')">
+                        
+                        ${p.isHot ? `<div class="absolute top-2 left-2 bg-red-600 text-[8px] text-white px-2 py-0.5 rounded-full font-black z-10 shadow-md">HOT</div>` : ''}
+                        
+                        <button onclick="openVideo('${videoPath}')" class="absolute bottom-2 right-2 bg-black/70 text-white p-2 rounded-full shadow-lg flex items-center gap-1 scale-90 active:scale-75 transition-transform">
+                            <svg width="10" height="10" fill="currentColor" viewBox="0 0 16 16"><path d="M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/></svg>
+                            <span class="text-[8px] font-black pr-1">效果</span>
+                        </button>
+                    </div>
+                    <div class="p-2.5 flex-1">
+                        <p class="text-red-700 font-black text-xs tracking-tighter">${p.id}</p>
+                        <p class="text-gray-800 text-[10px] font-bold leading-tight line-clamp-2 h-7">${p.name}</p>
+                        <p class="text-yellow-600 font-black text-sm mt-1">RM ${p.price.toFixed(2)}</p>
+                    </div>
+                    <div class="p-2 pt-0">
+                        <div class="flex items-center justify-between border rounded-lg h-7 mb-2 bg-gray-50 overflow-hidden">
+                            <button onclick="changeQty('${p.id}', -1)" class="w-8 h-full font-bold text-gray-400 hover:bg-gray-200 transition-colors">-</button>
+                            <input id="qty-${p.id}" type="number" value="1" min="1" class="w-8 text-center text-[10px] font-black bg-transparent text-gray-800 focus:outline-none">
+                            <button onclick="changeQty('${p.id}', 1)" class="w-8 h-full font-bold text-gray-400 hover:bg-gray-200 transition-colors">+</button>
+                        </div>
+                        <button onclick="addToCart('${p.id}')" class="w-full bg-red-600 text-white py-1.5 rounded-lg text-[10px] font-black hover:bg-red-700 active:scale-95 transition-all shadow-sm">
+                            加入订单
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function changeQty(id, delta) {
+            const input = document.getElementById(`qty-${id}`);
+            input.value = Math.max(1, (parseInt(input.value) || 1) + delta);
+        }
+
+        // 修改后的 addToCart：直接通过 ID 在内存中找，不再传递包含特殊符号的字符串
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+
+            const qtyInput = document.getElementById(`qty-${id}`);
+            const qty = parseInt(qtyInput.value) || 1;
+
+            if (cart[id]) {
+                cart[id].qty += qty;
+            } else {
+                cart[id] = { 
+                    name: product.name, 
+                    price: product.price, 
+                    qty: qty 
+                };
+            }
+            
+            // 重置输入框
+            qtyInput.value = 1;
+            
+            updateCartStats();
+            renderCartItems();
+        }
+
+        function clearCart() {
+            if (Object.keys(cart).length === 0) return;
+            if (confirm("确定要清空清单吗？")) {
+                cart = {};
+                updateCartStats();
+                renderCartItems();
+            }
+        }
+
+        function updateCartStats() {
+            const count = Object.values(cart).reduce((a, b) => a + b.qty, 0);
+            const total = Object.values(cart).reduce((a, b) => a + (b.qty * b.price), 0);
+            document.getElementById('cart-count').innerText = count;
+            document.getElementById('cart-total-price').innerText = `RM ${total.toFixed(2)}`;
+        }
+
+        function renderCartItems() {
+            const container = document.getElementById('cart-items');
+            const keys = Object.keys(cart);
+            if (keys.length === 0) {
+                container.innerHTML = '<div class="text-center py-10 text-gray-300 font-bold">尚未添加任何清单</div>';
+                return;
+            }
+            container.innerHTML = keys.map(id => `
+                <div class="flex justify-between items-center border-b pb-3 border-gray-100">
+                    <div class="flex-1 text-left">
+                        <span class="text-red-600 font-black text-xs">[${id}]</span>
+                        <h4 class="text-[11px] font-bold text-gray-700">${cart[id].name}</h4>
+                        <p class="text-[10px] text-gray-400 font-bold">RM ${cart[id].price.toFixed(2)} x ${cart[id].qty}</p>
+                    </div>
+                    <button onclick="deleteFromCart('${id}')" class="text-red-300 px-2 text-xl hover:text-red-600 transition-colors">&times;</button>
+                </div>
+            `).join('');
+        }
+
+        function deleteFromCart(id) {
+            delete cart[id];
+            updateCartStats();
+            renderCartItems();
+        }
+
+        function filterProducts(cat) {
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            renderProducts(cat);
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cart-modal');
+            modal.classList.toggle('hidden');
+            modal.classList.toggle('flex');
+        }
+
+        function openLightbox(src) {
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('image-lightbox').classList.replace('hidden', 'flex');
+        }
+        function closeLightbox() { document.getElementById('image-lightbox').classList.replace('flex', 'hidden'); }
+
+        function openVideo(src) {
+            const v = document.getElementById('product-video');
+            v.src = src;
+            document.getElementById('video-lightbox').classList.replace('hidden', 'flex');
+            v.play();
+        }
+        function closeVideo() {
+            const v = document.getElementById('product-video');
+            v.pause();
+            v.src = "";
+            document.getElementById('video-lightbox').classList.replace('flex', 'hidden');
+        }
+
+        function checkout() {
+            if (Object.keys(cart).length === 0) return;
+            let total = 0;
+            let msg = `🏮 *2026 马年烟火订单* 🏮\n`;
+            msg += `🙋‍♂️ 顾问: ${currentAgent.name}\n`;
+            msg += `----------------------------\n`;
+            Object.keys(cart).forEach((id, i) => {
+                const item = cart[id];
+                const sub = item.price * item.qty;
+                total += sub;
+                msg += `${i+1}. *[${id}]* ${item.name}\n   👉 RM ${item.price.toFixed(2)} x ${item.qty} = *RM ${sub.toFixed(2)}*\n`;
+            });
+            msg += `----------------------------\n`;
+            msg += `💰 *合计总额: RM ${total.toFixed(2)}*\n`;
+            msg += `----------------------------\n`;
+            msg += `祝您马到成功，万事如意！🐎`;
+            window.open(`https://wa.me/${currentAgent.phone}?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        window.onload = () => renderProducts();
+    </script>
+</body>
+</html>

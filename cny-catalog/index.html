@@ -130,7 +130,7 @@
         document.getElementById('display-agent-name').innerText = currentAgent.name;
         document.getElementById('cart-agent-name').innerText = currentAgent.name;
 
-        // 产品数据库 (添加 isSoldOut 属性进行库存管理)
+        // 产品数据库
         const products = [
             { id: 'PM11N', name: '小霞光', spec: '1 BOX 100 PCS', price: 16.00, category: '手持系列', isSoldOut: false },
             { id: 'PM22N', name: '7" 电光花', spec: '1 BOX 30 PACK (8PCS)', price: 24.00, category: '手持系列', isSoldOut: false },
@@ -213,9 +213,18 @@
 
         let cart = {};
 
+        /**
+         * 自动处理图片加载失败，支持 JPG -> PNG -> 占位图 的回退逻辑
+         */
         function handleImageError(img, id) {
-            img.onerror = null;
-            img.src = `https://placehold.co/400x400/800000/ffffff?text=${id}`;
+            if (img.src.includes('.jpg')) {
+                // 如果 JPG 失败，尝试 PNG
+                img.src = `images/${id}.png`;
+            } else if (img.src.includes('.png')) {
+                // 如果 PNG 也失败，显示带文字的占位图
+                img.onerror = null;
+                img.src = `https://placehold.co/400x400/800000/ffffff?text=${id}`;
+            }
         }
 
         function renderProducts(catFilter = 'all') {
@@ -225,6 +234,7 @@
 
             filtered.forEach(p => {
                 const pureId = p.id.replace('*', '');
+                // 初始尝试加载 JPG
                 const imgPath = `images/${pureId}.jpg`;
                 const videoPath = `videos/${pureId}.mp4`;
                 

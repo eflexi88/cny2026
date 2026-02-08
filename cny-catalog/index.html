@@ -53,7 +53,7 @@
     <!-- 头部公告 -->
     <header class="py-8 px-4 text-center">
         <h1 class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-b from-yellow-100 to-yellow-500 mb-1">
-            新春烟火大全
+            新春烟花大全
         </h1>
         <p class="text-yellow-100/60 text-xs italic">全系列爆款 · 现货供应 · 严选品质</p>
     </header>
@@ -380,8 +380,8 @@
         function checkout() {
             if (Object.keys(cart).length === 0) return;
             let total = 0;
-            let msg = `🏮 *2026 马年烟火订单* 🏮\n`;
-            msg += `🙋‍♂️ 顾问: ${currentAgent.name}\n`;
+            let msg = `🏮 *2026 马年烟花订单* 🏮\n`;
+            msg += `🙋‍♂️  ${currentAgent.name}\n`;
             msg += `----------------------------\n`;
             Object.keys(cart).forEach((id, i) => {
                 const item = cart[id];
@@ -400,4 +400,5 @@
     </script>
 </body>
 </html>
+
 
